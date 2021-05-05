@@ -26,6 +26,6 @@
         include("includes/login.php");
     }
     else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "user_info") {
-        
+        include("includes/user_info.php");
     }
 

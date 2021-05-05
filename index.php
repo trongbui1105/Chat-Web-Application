@@ -166,9 +166,10 @@
     }
 
     function handle_result(result, type) {
+        alert(result);
         if (result.trim() != "") {
             var obj = JSON.parse(result);
-            if (!obj.logged_in) {
+            if (typeof(obj.logged_in) != "undefined" && !obj.logged_in) {
                 window.location = "login.php";
             } else {
                 alert(result);
@@ -177,6 +178,5 @@
     }
 
     get_data({},"user_info");
-    // get_data({}, "signup");
 
 </script>

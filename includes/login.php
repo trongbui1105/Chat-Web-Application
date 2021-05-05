@@ -23,7 +23,7 @@
         if (is_array($result)) {
             $result = $result[0];
             if ($result->password == $DATA_OBJ->password) {
-                $_SESSION['user_id'] = $result->userid;
+                $_SESSION['userid'] = $result->userid;
                 $info->message = "You logged in succesfully";
                 $info->data_type = "info";
                 echo json_encode($info);
