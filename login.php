@@ -34,7 +34,7 @@
         max-width: 400px;
     }
 
-    input[type=text], input[type=password], input[type=button] {
+    input[type=text], input[type=password], input[type=submit] {
         padding: 10px;
         margin: 10px;
         width: 98%;
@@ -42,7 +42,7 @@
         border: solid 1px grey;
     }
 
-    input[type=button] {
+    input[type=submit] {
         width: 103%;
         cursor: pointer;
         background-color: #2b5488;
@@ -83,7 +83,11 @@
         <form id="myform">
             <input type="text" name="email" placeholder="Email"><br>
             <input type="password" name="password" placeholder="Password"><br>
-            <input type="button" value="Login" id="login_button"><br>
+            <input type="submit" value="Login" id="login_button"><br>
+            <br>
+            <a href="signup.php" style="display: block; text-align: center; text-decoration: none;">
+                Don't have an Account? Signup here!
+            </a>
         </form>
     </div>
 </body>
@@ -97,7 +101,8 @@
     var login_button = _("login_button");
     login_button.addEventListener("click", collect_data);
 
-    function collect_data() {
+    function collect_data(e) {
+        e.preventDefault();
         login_button.disabled = true;
         login_button.value = "Loading...Please wait...";
 

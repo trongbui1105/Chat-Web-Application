@@ -121,6 +121,7 @@
                     <label id="label_chat" for="radio_chat">Chat <img src="ui/icons/chat.png"></label>
                     <label id="label_contacts" for="radio_contacts">Contacts <img src="ui/icons/contacts.png"></label>
                     <label id="label_settings" for="radio_settings">Settings <img src="ui/icons/settings.png"></label>
+                    <label id="logout" for="radio_logout">Logout <img src="ui/icons/logout.png"></label>
                 </div>
             </div>
         </div>
@@ -149,6 +150,9 @@
         return document.getElementById(element);
     }
 
+    var logout = _("logout");
+    logout.addEventListener("click", logout_user);
+
     function get_data(find, type) {
         var xml = new XMLHttpRequest();
         xml.onload = function() {
@@ -166,14 +170,30 @@
     }
 
     function handle_result(result, type) {
-        alert(result);
         if (result.trim() != "") {
             var obj = JSON.parse(result);
             if (typeof(obj.logged_in) != "undefined" && !obj.logged_in) {
                 window.location = "login.php";
             } else {
-                alert(result);
+                switch(obj.data_type) {
+                    case "user_info":
+                        var username = _("username");
+                        var email = _("email");
+                        username.innerHTML = obj.username;
+                        email.innerHTML = obj.email;
+                        break;
+                    case "contacts":
+
+                        break;
+                }
             }
+        }
+    }
+
+    function logout_user() {
+        var answer = confirm("Are you sure you want to logout");
+        if (answer) {
+            get_data({}, "logout");
         }
     }
 
