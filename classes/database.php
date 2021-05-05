@@ -31,18 +31,41 @@ Class Database {
         $con = $this->connect();
         try {
             $statement = $con->prepare($query);
-            foreach ($data_array as $key => $value) {
-                $statement->bindParam(':'.$key, $value);
-            }
-            $check = $statement->execute();
+            $check = $statement->execute($data_array);
+            
         } catch (PDOException $e) {
-            $error = "Error!: " . $e->getMessage() . "<br/>";
+            $error = "Error!: " . $e->getMessage() . "<br>";
             return $error;
             die();
         }
 
         if ($check) {
             return true;
+        } else {
+            return false;
+        }
+        
+    }
+
+    //read to db
+    public function read($query, $data_array = []) {
+        $con = $this->connect();
+        try {
+            $statement = $con->prepare($query);
+            $check = $statement->execute($data_array);
+            
+        } catch (PDOException $e) {
+            $error = "Error!: " . $e->getMessage() . "<br>";
+            return $error;
+            die();
+        }
+
+        if ($check) {
+            $result = $statement->fetchAll(PDO::FETCH_OBJ);
+            if (is_array($result) && count($result) > 0) {
+                return $result;
+            }
+            return false;
         } else {
             return false;
         }

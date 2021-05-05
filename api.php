@@ -1,28 +1,31 @@
 <?php
 
-require_once("classes/autoload.php");
-$DB = new Database();
-$DATA_RAW = file_get_contents("php://input");
-$DATA_OBJ = json_decode($DATA_RAW);
-
-
-// process the data
-if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "signup") {
-    //sign up
-    $data = false;
-    $data['userid'] = $DB->generate_id(20);
-    $data['username'] = $DATA_OBJ->username;
-    $data['email'] = $DATA_OBJ->email;
-    $data['password'] = $DATA_OBJ->password;
-    $data['date'] = date("Y-m-d H:i:s");
-
-    $query = "insert into users(userid, username, email, password, date) values (:userid, :username, :email, :password, :date)";
-    $DB->write($query, $data);
-
-    if ($result) {
-        echo "Your profile was created";
-    } else {
-        echo "Your profile was NOT created";
+    session_start();
+    //check if logged in
+    $info = (object)[];
+    if(!isset($_SESSION['userid'])) {
+        if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type != "login") {
+            $info->logged_in = false;
+            echo json_encode($info);
+            die;
+        }
     }
-}
+
+    require_once("classes/autoload.php");
+    $DB = new Database();
+    $DATA_RAW = file_get_contents("php://input");
+    $DATA_OBJ = json_decode($DATA_RAW);
+
+    $Error = "";
+
+    // process the data
+    if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "signup") {
+        include("includes/signup.php");
+    } 
+    else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "login") {
+        include("includes/login.php");
+    }
+    else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "user_info") {
+        
+    }
 

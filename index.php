@@ -106,12 +106,12 @@
 <body>
     <div id="wrapper">
         <div id="left_panel">
-            <div style="padding: 10px;">
-                <img id="profile_image" src="ui/images/trongbui.jpg">
+            <div id="user_info" style="padding: 10px;">
+                <img id="profile_image" src="ui/images/user_male.jpg">
                 <br>
-                Quốc Trọng
+                <span id="username">Username</span>
                 <br>
-                <span style="font-size: 15px; opacity: 0.5;">buiquoctrong110500@gmail.com</span>
+                <span id="email" style="font-size: 15px; opacity: 0.5;">email@gmail.com</span>
                 
                 <br>
                 <br>
@@ -132,7 +132,7 @@
                 </div>
 
                 <input type="radio" id="radio_chat" name="myradio"  style="display: none;">
-                <input type="radio" id="radio_contacts" name="myradio" checked="checked" style="display: none;">
+                <input type="radio" id="radio_contacts" name="myradio" style="display: none;">
                 <input type="radio" id="radio_settings" name="myradio" style="display: none;">
 
                 <div id="inner_right_panel">
@@ -149,18 +149,34 @@
         return document.getElementById(element);
     }
 
-    var label = _("label_chat");
-    label.addEventListener("click", function(){
-        var inner_panel = _("inner_left_panel");
-        var ajax = new XMLHttpRequest();
-        ajax.onload = function() {
-            if(ajax.status == 200 || ajax.readyState == 4) {
-                inner_panel.innerHTML = ajax.responseText;
+    function get_data(find, type) {
+        var xml = new XMLHttpRequest();
+        xml.onload = function() {
+            if (xml.readyState == 4 || xml.status == 200) {
+                handle_result(xml.responseText, type);
             }
         }
-        ajax.open("POST", "file.php",true);
-        ajax.send();
-    });
-    
+        var data = {};
+        data.find = find;
+        data.data_type = type;
+        data = JSON.stringify(data);
+
+        xml.open("POST", "api.php", true);
+        xml.send(data);
+    }
+
+    function handle_result(result, type) {
+        if (result.trim() != "") {
+            var obj = JSON.parse(result);
+            if (!obj.logged_in) {
+                window.location = "login.php";
+            } else {
+                alert(result);
+            }
+        }
+    }
+
+    get_data({},"user_info");
+    // get_data({}, "signup");
 
 </script>
