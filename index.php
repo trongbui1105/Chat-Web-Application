@@ -20,7 +20,7 @@
 
     #wrapper {
         max-width: 1200px;
-        min-height: 500px;
+        min-height: 600px;
         display: flex;
         margin: auto;
         color: white;
@@ -29,7 +29,7 @@
     }
 
     #left_panel {
-        min-height: 500px;
+        min-height: 700px;
         background-color: #27344b;
         flex: 1;
         text-align: center;
@@ -63,7 +63,7 @@
     }
 
     #right_panel {
-        min-height: 500px;
+        min-height: 700px;
         flex: 4;
         text-align: center;
     }
@@ -74,18 +74,19 @@
         font-size: 45px;
         text-align: center;
         font-family: headFont;
+        position: relative;
     }
 
     #inner_left_panel {
         background-color: #383e48;
         flex: 1;
-        min-height: 430px;
+        min-height: 700px;
     }
 
     #inner_right_panel {
         background-color: #f2f7f8;
         flex: 2;
-        min-height: 430px;
+        min-height: 700px;
         transition: all 2s ease;
     }
 
@@ -110,6 +111,14 @@
         width: 100%;
     }
 
+    .loader_on {
+        position: absolute;
+        width: 30%;
+    }
+
+    .loader_off {
+        display: none;
+    }
 </style>
 
 <body>
@@ -135,7 +144,10 @@
             </div>
         </div>
         <div id="right_panel">
-            <div id="header">My Chat</div>
+            <div id="header">
+                <div id="loader_holder" class="loader_on"> <img style="width: 70px;" src="ui/icons/giphy.gif"> </div>
+                My Chat
+            </div>
             <div id="container" style="display: flex;">
                 <div id="inner_left_panel">
                     
@@ -173,8 +185,11 @@
 
     function get_data(find, type) {
         var xml = new XMLHttpRequest();
+        var loader_holder = _("loader_holder");
+        loader_holder.className = "loader_on";
         xml.onload = function() {
             if (xml.readyState == 4 || xml.status == 200) {
+                loader_holder.className = "loader_off";
                 handle_result(xml.responseText, type);
             }
         }
