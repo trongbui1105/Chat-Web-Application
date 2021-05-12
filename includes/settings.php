@@ -1,5 +1,5 @@
 <?php
-    // sleep(2);
+    sleep(1);
 
     $sql = "select * from users where userid = :userid limit 1";
     $id = $_SESSION['userid'];
@@ -26,6 +26,12 @@
 
         $mydata = '
             <style type="text/css">
+
+                @keyframes appear {
+                    0%{opacity: 0; transform: translateY(50px) rotate(5deg); transform-origin: 100% 100%;}
+                    100%{opacity: 1; transform: translateY(0px) rotate(0deg); transform-origin: 100% 100%;}
+                }
+
                 form {
                     text-align: left;
                     margin: auto;
@@ -65,15 +71,30 @@
                 #change_image_button {
                     background-color: #9b9a80;
                     width: 200px;
-                    margin-left: 80px;
+                    margin-left: 70px;
+                    margin-top: 20px;
+                    display: inline-block;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
                 }
+
+                .dragging {
+                    border: dashed 2px #aaa;
+                }
+
             </style>
 
             <div id="error" style="">Error</div>
-            <div style="display: flex;">
+            <div style="display: flex; animation: appear 1s ease;">
                 <div>
-                    <img src="'.$image.'" style="width: 200px; height: 200px; margin-left: 70px; margin-top: 70px;" />
-                    <input type="button" value="Change Image" id="change_image_button">
+                    <img ondragover="handle_drag_and_drop(event)" ondrop="handle_drag_and_drop(event)"
+                            ondragleave="handle_drag_and_drop(event)" src="'.$image.'" 
+                            style="width: 200px; height: 200px; margin-left: 70px; margin-top: 70px;" />
+                    <label for="change_image_input" id="change_image_button">
+                        Change Image
+                    </label> 
+                    <input type="file" onchange="upload_profile_image(this.files)" value="Change Image" id="change_image_input" style="display: none;">    
                 </div>
                 <form id="myform">
                     <input type="text" name="username" placeholder="Username" value="'.$data->username.'"><br>
@@ -90,17 +111,16 @@
 
             </div>
         ';
+
+        $info->message = $mydata;
+        $info->data_type = "contacts";
+        echo json_encode($info);
+    } else {
+        $info->message = "No contacts were found";
+        $info->data_type = "error";
+        echo json_encode($info);
     }
 
-    // $result = $result[0];
-    $info->message = $mydata;
-    $info->data_type = "contacts";
-    echo json_encode($info);
-
-    die;
-
-    $info->message = "No contacts were found";
-    $info->data_type = "error";
-    echo json_encode($info);
+    
 ?>
     

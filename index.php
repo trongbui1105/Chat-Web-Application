@@ -36,10 +36,12 @@
     }
 
     #profile_image {
-        width: 50%;
+        /* width: 50%; */
         border: solid thin white;
         border-radius: 50%;
         margin: 10px;
+        height: 200px;
+        width: 200px;
     }
 
     #left_panel label {
@@ -104,11 +106,27 @@
         margin: 10px;
         display: inline-block;
         vertical-align: top;
-        /* overflow: hidden; */
     }
 
     #contact img {
-        width: 100%;
+        width: 150px;
+        height: 150px;
+    }
+
+    #active_contact {
+        height: 130px;
+        margin: 1px;
+        border: solid thin #aaa;
+        padding: 1px;
+        background-color: #eee;
+        color: #444;
+    }
+
+    #active_contact img {
+        width: 120px;
+        height: 120px;
+        float: left;
+        margin: 4px;
     }
 
     .loader_on {
@@ -167,6 +185,7 @@
 </html>
 
 <script>
+    var CURRENT_CHAT_USER = "";
     function _(element) {
         return document.getElementById(element);
     }
@@ -318,5 +337,52 @@
         xml.send(data_string);
     }
 
+    function upload_profile_image(files) {
+        var change_image_button = _("change_image_button");
+        change_image_button.disabled = true;
+        change_image_button.innerHTML = "Uploading Image...";
 
+        var myform = new FormData();
+        var xml = new XMLHttpRequest();
+        xml.onload = function() {
+            if(xml.readyState == 4 || xml.status == 200) {
+                // alert(xml.responseText);
+                get_data({},"user_info");
+                get_settings(true);
+                change_image_button.disabled = false;
+                change_image_button.innerHTML = "Change Image";
+            }
+        }
+        myform.append('file', files[0]);
+        myform.append('data_type', "change_profile_image");
+        xml.open("POST", "uploader.php", true);
+        xml.send(myform);
+    }
+
+    function handle_drag_and_drop(e) {
+        if (e.type == "dragover") {
+            e.preventDefault();
+            e.target.className = "dragging";
+        } else if (e.type == "dragleave") {
+            e.preventDefault();
+            e.target.className = "";
+        } else if (e.type == "drop") {
+            e.preventDefault();
+            e.target.className = "";
+            upload_profile_image(e.dataTransfer.files);
+        } else {
+            e.target.className = "";
+        }
+    }
+
+    function start_chat(e) {
+        var userid = e.target.getAttribute("userid");
+        if (e.target.id == "") {
+            userid = e.target.parentNode.getAttribute("userid");
+        }
+        CURRENT_CHAT_USER = userid;
+        var radio_chat = _("radio_chat");
+        radio_chat.checked = true;
+        get_data({userid: CURRENT_CHAT_USER}, "chats");
+    }
 </script>
