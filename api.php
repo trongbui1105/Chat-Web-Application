@@ -46,3 +46,27 @@
         include("includes/save_settings.php");
     }
 
+    function message_left($row) {
+        return "
+            <div id='message_left'>
+                <div></div>
+                <img src='$row->image'>
+                <b>$row->username</b> <br>
+                This is a test message <br> <br>
+                <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
+            </div>
+        ";
+    }
+
+    function message_right($row) {
+        return "
+            <div id='message_right'>
+                <div></div>
+                <img src='$row->image' style='float:right'>
+                <b>$row->username</b> <br>
+                This is a test message <br> <br>
+                <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
+            </div>
+        ";
+    }
+

@@ -20,7 +20,9 @@
 
     #wrapper {
         max-width: 1200px;
-        min-height: 600px;
+        /* min-height: 700px;
+        max-height: 700px; */
+        height: 700px;
         display: flex;
         margin: auto;
         color: white;
@@ -29,7 +31,9 @@
     }
 
     #left_panel {
-        min-height: 700px;
+        /* min-height: 500px;
+        max-height: 700px; */
+        height: 780px;
         background-color: #27344b;
         flex: 1;
         text-align: center;
@@ -65,7 +69,9 @@
     }
 
     #right_panel {
-        min-height: 700px;
+        /* min-height: 500px;
+        max-height: 700px; */
+        height: 700px;
         flex: 4;
         text-align: center;
     }
@@ -82,13 +88,17 @@
     #inner_left_panel {
         background-color: #383e48;
         flex: 1;
-        min-height: 700px;
+        /* min-height: 500px;
+        max-height: 700px; */
+        height: 700px;
     }
 
     #inner_right_panel {
         background-color: #C8BBB9;
         flex: 2;
-        min-height: 700px;
+        /* min-height: 500px;
+        max-height: 700px; */
+        height: 700px;
         transition: all 2s ease;
     }
 
@@ -131,7 +141,7 @@
     }
 
     #message_left {
-        width: 70%;
+        width: 67%;
         height: 90px;
         margin: 10px;
         padding: 1px;
@@ -139,14 +149,14 @@
         background-color: #eee;
         color: #444;
         float: left;
-        box-shadow: 0px 0px 20px #aaa;
+        box-shadow: 0px 0px 10px #545050;
         border-bottom-left-radius: 50%;
         position: relative;
     }
 
     #message_left img {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         float: left;
         margin: 4px;
         border-radius: 50%;
@@ -161,7 +171,41 @@
         border: solid 2px white;
         position: absolute;
         left: -5px;
-        top: 30px;
+        top: 40px;
+    }
+
+    #message_right {
+        width: 67%;
+        height: 90px;
+        margin: 10px;
+        padding: 1px;
+        padding-right: 0px;
+        background-color: #fbffee;
+        color: #444;
+        float: right;
+        box-shadow: 0px 0px 10px #545050;
+        border-bottom-right-radius: 50%;
+        position: relative;
+    }
+
+    #message_right img {
+        width: 80px;
+        height: 80px;
+        float: left;
+        margin: 4px;
+        border-radius: 50%;
+        border: solid 2px white;
+    }
+
+    #message_right div {
+        width: 12px;
+        height: 12px;
+        background-color: #34474f;
+        border-radius: 50%;
+        border: solid 2px white;
+        position: absolute;
+        right: -5px;
+        top: 40px;
     }
 
     .loader_on {
@@ -258,6 +302,9 @@
 
     function handle_result(result, type) {
         if (result.trim() != "") {
+            var inner_right_panel = _("inner_right_panel");
+            inner_right_panel.style.overflow = "visible";
+            
             var obj = JSON.parse(result);
             if (typeof(obj.logged_in) != "undefined" && !obj.logged_in) {
                 window.location = "login.php";
@@ -274,6 +321,8 @@
                         break;
                     case "contacts":
                         var inner_left_panel = _("inner_left_panel");
+
+                        inner_right_panel.style.overflow = "hidden";
                         inner_left_panel.innerHTML = obj.message;
                         break;
                     case "chats":

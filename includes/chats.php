@@ -14,6 +14,7 @@
         if (file_exists($row->image)) {
             $image = $row->image;
         }
+        $row->image = $image;
         $mydata =   "Now Chatting with: <br>
                     <div id='active_contact'>
                                 <img src='$image'>
@@ -21,19 +22,16 @@
                         </div>";
 
         $messages =    "
-                        <div id='message_left'>
-                            <div></div>
-                            <img src='$image'>
-                            <b>$row->username</b> <br>
-                            This is a test message <br> <br>
-                            <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
-                        </div>
-                        <div id='message_right'>
-                            <div></div>
-                            <img src='$image' style='float:right'>
-                            <b>$row->username</b> <br>
-                            This is a test message <br> <br>
-                            <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
+                        <div id='messages_holder_parent' style='height: 698px;'>
+                            <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
+        $messages .= message_left($row);
+        $messages .= "
+                            </div>
+
+                            <div style='display: flex; width: 100%; height: 60px;'>
+                                <input style='flex:6; border: none; font-size: 15px; padding: 6px;' type='text' placeholder='Type your message' />
+                                <input style='flex:1; cursor: pointer;' type='button' value='Send' />
+                            </div>
                         </div>
                         ";
         $info->user = $mydata;
