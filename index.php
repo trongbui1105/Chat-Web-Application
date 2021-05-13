@@ -86,7 +86,7 @@
     }
 
     #inner_right_panel {
-        background-color: #f2f7f8;
+        background-color: #C8BBB9;
         flex: 2;
         min-height: 700px;
         transition: all 2s ease;
@@ -114,8 +114,9 @@
     }
 
     #active_contact {
-        height: 130px;
-        margin: 1px;
+        width: 290px;
+        height: 120px;
+        margin: auto;
         border: solid thin #aaa;
         padding: 1px;
         background-color: #eee;
@@ -123,10 +124,44 @@
     }
 
     #active_contact img {
-        width: 120px;
-        height: 120px;
+        width: 110px;
+        height: 110px;
         float: left;
         margin: 4px;
+    }
+
+    #message_left {
+        width: 70%;
+        height: 90px;
+        margin: 10px;
+        padding: 1px;
+        padding-right: 0px;
+        background-color: #eee;
+        color: #444;
+        float: left;
+        box-shadow: 0px 0px 20px #aaa;
+        border-bottom-left-radius: 50%;
+        position: relative;
+    }
+
+    #message_left img {
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin: 4px;
+        border-radius: 50%;
+        border: solid 2px white;
+    }
+
+    #message_left div {
+        width: 12px;
+        height: 12px;
+        background-color: #34474f;
+        border-radius: 50%;
+        border: solid 2px white;
+        position: absolute;
+        left: -5px;
+        top: 30px;
     }
 
     .loader_on {
@@ -243,7 +278,8 @@
                         break;
                     case "chats":
                         var inner_left_panel = _("inner_left_panel");
-                        inner_left_panel.innerHTML = obj.message;
+                        inner_left_panel.innerHTML = obj.user;
+                        inner_right_panel.innerHTML = obj.messages;
                         break;
                     case "settings":
                         var inner_left_panel = _("inner_left_panel");
@@ -267,6 +303,9 @@
     }
 
     get_data({},"user_info");
+    get_data({},"contacts");
+    var radio_contacts = _("radio_contacts");
+    radio_contacts.checked = true;
 
     function get_contacts(e) {
         get_data({}, "contacts");

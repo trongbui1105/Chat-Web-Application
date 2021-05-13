@@ -104,8 +104,8 @@
                         <input type="radio" value="Male" name="gender" '.$gender_male.'>Male<br>
                         <input type="radio" value="Female" name="gender" '.$gender_female.'>Female<br>
                     </div>
-                    <input type="text" name="password" placeholder="Password" value="'.$data->password.'"><br>
-                    <input type="text" name="password2" placeholder="Retype Password" value="'.$data->password.'"><br>
+                    <input type="password" name="password" placeholder="Password" value="'.$data->password.'"><br>
+                    <input type="password" name="password2" placeholder="Retype Password" value="'.$data->password.'"><br>
                     <input type="button" value="Save Settings" id="save_settings_button" onclick="collect_data(event)"><br>
                 </form>
 
