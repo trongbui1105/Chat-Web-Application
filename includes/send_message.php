@@ -9,6 +9,14 @@
     $result = $DB->read($sql, $arr);
 
     if (is_array($result)) {
+        $arr['userid'] = $DATA_OBJ->find->message;
+        $arr['date'] = date("Y-m-d H:i:s");
+        $arr['sender'] = $_SESSION['userid'];
+        $arr['sender'] = $_SESSION['userid'];
+
+        $query = "insert into messages (sender, receiver, message, date) values (:sender, :userid, :message, :date)";
+        $DB->write($sql, $arr);
+        //user found
         $row = $result[0];
         $image = ($row->gender == "Male") ? "ui/images/user_male.jpg" : "ui/images/user_female.jpg";
         if (file_exists($row->image)) {
@@ -43,6 +51,24 @@
         $info->message = "That contacts was not found";
         $info->data_type = "chats";
         echo json_encode($info);
+    }
+
+    function get_random_string_max($length) {
+
+        $array = array(0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+        $text = "";
+    
+        $length = rand(4,$length);
+    
+        for($i=0;$i<$length;$i++) {
+    
+            $random = rand(0,61);
+            
+            $text .= $array[$random];
+    
+        }
+    
+        return $text;
     }
 
     

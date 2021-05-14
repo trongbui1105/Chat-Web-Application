@@ -146,11 +146,12 @@
         margin: 10px;
         padding: 1px;
         padding-right: 0px;
-        background-color: #eee;
-        color: #444;
+        background-color: #9c65a5;
+        color: white;
         float: left;
         box-shadow: 0px 0px 10px #545050;
         border-bottom-left-radius: 50%;
+        border-top-right-radius: 30%;
         position: relative;
     }
 
@@ -185,6 +186,7 @@
         float: right;
         box-shadow: 0px 0px 10px #545050;
         border-bottom-right-radius: 50%;
+        border-top-left-radius: 30%;
         position: relative;
     }
 
@@ -304,7 +306,7 @@
         if (result.trim() != "") {
             var inner_right_panel = _("inner_right_panel");
             inner_right_panel.style.overflow = "visible";
-            
+
             var obj = JSON.parse(result);
             if (typeof(obj.logged_in) != "undefined" && !obj.logged_in) {
                 window.location = "login.php";
@@ -339,6 +341,9 @@
                         get_data({},"user_info");
                         get_settings(true);
                         break;
+                    case "send_message":
+                        alert(obj.message);
+                        break;
                 }
             }
         }
@@ -366,6 +371,19 @@
 
     function get_settings(e) {
         get_data({}, "settings");
+    }
+
+    function send_message(e) {
+        var message_text = _("message_text");
+        if (message_text.value.trim() == "") {
+            alert("Please type something to send");
+            return;
+        }
+        alert(message_text.value);
+        get_data({
+            message: message_text.value.trim(),
+            userid : CURRENT_CHAT_USER,
+        }, "send_message");
     }
 
 </script>

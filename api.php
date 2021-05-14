@@ -45,6 +45,9 @@
     else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "save_settings") {
         include("includes/save_settings.php");
     }
+    else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "send_message") {
+        include("includes/send_message.php");
+    }
 
     function message_left($row) {
         return "
@@ -53,7 +56,7 @@
                 <img src='$row->image'>
                 <b>$row->username</b> <br>
                 This is a test message <br> <br>
-                <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
+                <span style='font-size: 13px; color: white;'>12 May 2021 21:30 pm</span>
             </div>
         ";
     }
@@ -65,7 +68,7 @@
                 <img src='$row->image' style='float:right'>
                 <b>$row->username</b> <br>
                 This is a test message <br> <br>
-                <span style='font-size: 13px; color: #878281;'>12 May 2021 21:30 pm</span>
+                <span style='font-size: 13px; color: white;'>12 May 2021 21:30 pm</span>
             </div>
         ";
     }
