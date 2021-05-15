@@ -9,13 +9,23 @@
     $result = $DB->read($sql, $arr);
 
     if (is_array($result)) {
-        $arr['userid'] = $DATA_OBJ->find->message;
+        $arr['message'] = $DATA_OBJ->find->message;
         $arr['date'] = date("Y-m-d H:i:s");
         $arr['sender'] = $_SESSION['userid'];
-        $arr['sender'] = $_SESSION['userid'];
+        $arr['msgid'] = get_random_string_max(60);
 
-        $query = "insert into messages (sender, receiver, message, date) values (:sender, :userid, :message, :date)";
-        $DB->write($sql, $arr);
+        $arr2['sender'] = $_SESSION['userid'];
+        $arr2['receiver'] = $arr['userid'];
+
+        $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) limit 1";        $result2 = $DB->read($sql, $arr2);
+
+        if (is_array($result2)) {
+            $arr['msgid'] = $result2[0]->msgid;
+        }
+
+        $query = "insert into messages (sender, receiver, message, date, msgid) values (:sender, :userid, :message, :date, :msgid)";
+        $DB->write($query, $arr);
+
         //user found
         $row = $result[0];
         $image = ($row->gender == "Male") ? "ui/images/user_male.jpg" : "ui/images/user_female.jpg";
@@ -32,6 +42,18 @@
         $messages =    "
                         <div id='messages_holder_parent' style='height: 698px;'>
                             <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
+
+        // read from db
+        $a['msgid']= $arr['msgid'];
+
+        $sql = "select * from messages where msgid = :msgid limit 10";
+        $result2 = $DB->read($sql, $a);
+
+        if (is_array($result2)) {
+            foreach ($result2 as $data) {
+                $messages .= message_right($data, $row);
+            }
+        }
 
         $messages .= "
                         </div>

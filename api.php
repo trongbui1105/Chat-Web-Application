@@ -49,7 +49,7 @@
         include("includes/send_message.php");
     }
 
-    function message_left($row) {
+    function message_left($data ,$row) {
         return "
             <div id='message_left'>
                 <div></div>
@@ -61,13 +61,13 @@
         ";
     }
 
-    function message_right($row) {
+    function message_right($data, $row) {
         return "
             <div id='message_right'>
                 <div></div>
                 <img src='$row->image' style='float:right'>
                 <b>$row->username</b> <br>
-                This is a test message <br> <br>
+                $data->message <br> <br>
                 <span style='font-size: 13px; color: white;'>12 May 2021 21:30 pm</span>
             </div>
         ";

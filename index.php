@@ -329,6 +329,7 @@
                         break;
                     case "chats":
                         var inner_left_panel = _("inner_left_panel");
+                        
                         inner_left_panel.innerHTML = obj.user;
                         inner_right_panel.innerHTML = obj.messages;
                         break;
@@ -340,9 +341,6 @@
                         alert(obj.message);
                         get_data({},"user_info");
                         get_settings(true);
-                        break;
-                    case "send_message":
-                        alert(obj.message);
                         break;
                 }
             }
@@ -379,7 +377,6 @@
             alert("Please type something to send");
             return;
         }
-        alert(message_text.value);
         get_data({
             message: message_text.value.trim(),
             userid : CURRENT_CHAT_USER,
