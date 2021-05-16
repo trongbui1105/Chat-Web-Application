@@ -17,7 +17,8 @@
         $arr2['sender'] = $_SESSION['userid'];
         $arr2['receiver'] = $arr['userid'];
 
-        $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) limit 1";        $result2 = $DB->read($sql, $arr2);
+        $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) limit 1";
+        $result2 = $DB->read($sql, $arr2);
 
         if (is_array($result2)) {
             $arr['msgid'] = $result2[0]->msgid;
@@ -46,25 +47,24 @@
         // read from db
         $a['msgid']= $arr['msgid'];
 
-        $sql = "select * from messages where msgid = :msgid limit 10";
+        $sql = "select * from messages where msgid = :msgid order by id desc limit 10";
         $result2 = $DB->read($sql, $a);
 
         if (is_array($result2)) {
+            $result2 = array_reverse($result2);
             foreach ($result2 as $data) {
-                $messages .= message_right($data, $row);
+                $myuser = $DB->get_user($data->sender);
+                if ($_SESSION['userid'] == $data->sender) {
+                    $messages .= message_right($data, $myuser);
+                } else {
+                    $messages .= message_left($data, $myuser);
+                }
             }
         }
 
-        $messages .= "
-                        </div>
-                            <div style='display: flex; width: 100%; height: 60px;'>
-                                <label for='file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 50px; margin-top: 5px; cursor:pointer'></label>
-                                <input type='file' id='message_file' name='file' style='display: none'/>
-                                <input id='message_text' style='flex:6; border: solid thin #ccc; border_bottom: none; font-size: 15px; padding: 6px;' type='text' placeholder='Type your message' />
-                                <input style='flex:1; cursor: pointer;' type='button' value='Send' onclick='send_message(event)'/>
-                            </div>
-                        </div>
-                        ";
+        $messages .= message_controls();
+
+
         $info->user = $mydata;
         $info->messages = $messages;
         $info->data_type = "chats";

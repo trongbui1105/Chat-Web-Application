@@ -36,7 +36,7 @@
     else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "contacts") {
         include("includes/contacts.php");
     }
-    else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "chats") {
+    else if (isset($DATA_OBJ->data_type) && ($DATA_OBJ->data_type == "chats" || $DATA_OBJ->data_type == "chats_refresh")) {
         include("includes/chats.php");
     }
     else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "settings") {
@@ -55,8 +55,8 @@
                 <div></div>
                 <img src='$row->image'>
                 <b>$row->username</b> <br>
-                This is a test message <br> <br>
-                <span style='font-size: 13px; color: white;'>12 May 2021 21:30 pm</span>
+                $data->message <br> <br>
+                <span style='font-size: 13px; color: white;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
             </div>
         ";
     }
@@ -68,7 +68,19 @@
                 <img src='$row->image' style='float:right'>
                 <b>$row->username</b> <br>
                 $data->message <br> <br>
-                <span style='font-size: 13px; color: white;'>12 May 2021 21:30 pm</span>
+                <span style='font-size: 13px; color: #544141;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
+            </div>
+        ";
+    }
+    function message_controls() {
+        return "
+            </div>
+                <div style='display: flex; width: 100%; height: 60px;'>
+                    <label for='message_file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 50px; margin-top: 5px; cursor:pointer'></label>
+                    <input type='file' id='message_file' name='file' style='display: none'/>
+                    <input id='message_text' onkeyup='enter_pressed(event)' style='flex:6; border: solid thin #ccc; border_bottom: none; font-size: 15px; padding: 6px;' type='text' placeholder='Type your message' />
+                    <input style='flex:1; cursor: pointer;' type='button' value='Send' onclick='send_message(event)'/>
+                </div>
             </div>
         ";
     }

@@ -327,11 +327,22 @@
                         inner_right_panel.style.overflow = "hidden";
                         inner_left_panel.innerHTML = obj.message;
                         break;
+                    case "chats_refresh":
+                        var messages_holder = _("messages_holder");
+						messages_holder.innerHTML = obj.messages;
+                        break;
                     case "chats":
                         var inner_left_panel = _("inner_left_panel");
-                        
+
                         inner_left_panel.innerHTML = obj.user;
                         inner_right_panel.innerHTML = obj.messages;
+
+                        var messages_holder = _("messages_holder");
+                        setTimeout(function() {
+                            messages_holder.scrollTo(0,messages_holder.scrollHeight);
+                            var message_text = _("message_text");
+                            message_text.focus();
+                        }, 0);
                         break;
                     case "settings":
                         var inner_left_panel = _("inner_left_panel");
@@ -382,6 +393,18 @@
             userid : CURRENT_CHAT_USER,
         }, "send_message");
     }
+
+    function enter_pressed(e) {
+        if (e.keyCode == 13) {
+            send_message(e);
+        }
+    }
+
+    setInterval(function() {
+        if (CURRENT_CHAT_USER != "") {
+            get_data({userid: CURRENT_CHAT_USER}, "chats_refresh");
+        }
+    }, 5000);
 
 </script>
 

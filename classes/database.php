@@ -71,6 +71,30 @@ Class Database {
         }
         
     }
+    public function get_user($userid) {
+        $con = $this->connect();
+        try {
+            $arr['userid'] = $userid;
+            $query = "select * from users where userid = :userid limit 1";
+            $statement = $con->prepare($query);
+            $check = $statement->execute($arr);
+            
+        } catch (PDOException $e) {
+            $error = "Error!: " . $e->getMessage() . "<br>";
+            return $error;
+            die();
+        }
+
+        if($check) {
+			$result = $statement->fetchAll(PDO::FETCH_OBJ);
+			if(is_array($result) && count($result) > 0) {
+				return $result[0];
+			}
+			return false;
+		}
+		return false;
+        
+    }
 
     
 

@@ -5,6 +5,11 @@
         $arr['userid'] = $DATA_OBJ->find->userid;
     } 
     
+    $refresh = false;
+    if ($DATA_OBJ->data_type == "chats_refresh"){
+		$refresh = true;
+    }
+
     $sql = "select * from users where userid = :userid limit 1";
     $result = $DB->read($sql, $arr);
 
@@ -15,34 +20,78 @@
             $image = $row->image;
         }
         $row->image = $image;
-        $mydata =   "Now Chatting with: <br>
-                    <div id='active_contact'>
-                                <img src='$image'>
-                                <br>$row->username
+        $mydata = "";
+        if (!$refresh) {
+            $mydata =   "Now Chatting with: <br>
+                        <div id='active_contact'>
+                            <img src='$image'>
+                            <br>$row->username
                         </div>";
+        }
 
-        $messages =    "
-                        <div id='messages_holder_parent' style='height: 698px;'>
+        $messages = "";
+        if (!$refresh) {
+            $messages =    "<div id='messages_holder_parent' style='height: 698px;'>
                             <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
+        }
 
-        $messages .= "
-                        </div>
-                            <div style='display: flex; width: 100%; height: 60px;'>
-                                <label for='file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 50px; margin-top: 5px; cursor:pointer'></label>
-                                <input type='file' id='message_file' name='file' style='display: none'/>
-                                <input id='message_text' style='flex:6; border: solid thin #ccc; border_bottom: none; font-size: 15px; padding: 6px;' type='text' placeholder='Type your message' />
-                                <input style='flex:1; cursor: pointer;' type='button' value='Send' onclick='send_message(event)'/>
-                            </div>
-                        </div>
-                        ";
+        // read from db
+        $a['sender']= $_SESSION['userid'];
+        $a['receiver'] = $arr['userid'];
+
+        $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) order by id desc limit 10";
+        $result2 = $DB->read($sql, $a);
+
+        if (is_array($result2)) {
+            $result2 = array_reverse($result2);
+            foreach ($result2 as $data) {
+                $myuser = $DB->get_user($data->sender);
+                if ($_SESSION['userid'] == $data->sender) {
+                    $messages .= message_right($data, $myuser);
+                } else {
+                    $messages .= message_left($data, $myuser);
+                }
+            }
+        }
+
+        if (!$refresh) {
+            $messages .= message_controls();
+        }
+
         $info->user = $mydata;
         $info->messages = $messages;
         $info->data_type = "chats";
+        if ($refresh) {
+            $info->data_type = "chats_refresh";
+        }
         echo json_encode($info);
     } else {
-        $info->message = "That contacts was not found";
-        $info->data_type = "chats";
-        echo json_encode($info);
+
+        // read from db
+        $a['userid'] = $_SESSION['userid'];
+ 
+		$sql = "select * from messages where (sender = :userid || receiver = :userid) group by msgid order by id desc limit 10";
+		$result2 = $DB->read($sql,$a);
+
+		$mydata = "Previews Chats:<br>";
+        if (is_array($result2)) {
+            $result2 = array_reverse($result2);
+            foreach ($result2 as $data) {
+                $myuser = $DB->get_user($data->sender);
+
+                $mydata .=   "
+                            <div id='active_contact'>
+                                <img src='$myuser->image'>
+                                $myuser->username
+                            </div>";
+            }
+        }
+
+        $info->user = $mydata;
+		$info->messages = "";
+ 		$info->data_type = "chats";
+ 
+		echo json_encode($info);
     }
 
     
