@@ -56,7 +56,7 @@
 
         if (!$refresh) {
             $messages .= message_controls();
-        }
+        }  
 
         $info->user = $mydata;
         $info->messages = $messages;
