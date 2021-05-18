@@ -36,12 +36,11 @@
         $row->image = $image;
         $mydata =   "Now Chatting with: <br>
                     <div id='active_contact'>
-                                <img src='$image'>
-                                <br>$row->username
-                        </div>";
+                        <img src='$image'>
+                        <br>$row->username
+                    </div>";
 
-        $messages =    "
-                        <div id='messages_holder_parent' style='height: 698px;'>
+        $messages =    "<div id='messages_holder_parent' style='height: 698px;'>
                             <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
 
         // read from db

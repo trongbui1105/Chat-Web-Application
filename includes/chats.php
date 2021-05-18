@@ -36,8 +36,9 @@
         }
 
         // read from db
-        $a['sender']= $_SESSION['userid'];
-        $a['receiver'] = $arr['userid'];
+        $a['sender'] = $_SESSION['userid'];
+ 		$a['receiver'] = $arr['userid'];
+
 
         $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) order by id desc limit 10";
         $result2 = $DB->read($sql, $a);
@@ -46,10 +47,10 @@
             $result2 = array_reverse($result2);
             foreach ($result2 as $data) {
                 $myuser = $DB->get_user($data->sender);
-                if ($_SESSION['userid'] == $data->sender) {
-                    $messages .= message_right($data, $myuser);
-                } else {
-                    $messages .= message_left($data, $myuser);
+                if ($_SESSION['userid'] == $data->sender){
+                    $messages .= message_right($data,$myuser);
+                }else {
+                    $messages .= message_left($data,$myuser);
                 }
             }
         }
@@ -61,16 +62,16 @@
         $info->user = $mydata;
         $info->messages = $messages;
         $info->data_type = "chats";
-        if ($refresh) {
-            $info->data_type = "chats_refresh";
-        }
-        echo json_encode($info);
+		if($refresh){
+			$info->data_type = "chats_refresh";
+		}
+		echo json_encode($info);
     } else {
 
         // read from db
         $a['userid'] = $_SESSION['userid'];
  
-		$sql = "select * from messages where (sender = :userid || receiver = :userid) group by msgid order by id desc limit 10";
+        $sql = "select * from messages where (sender = :userid || receiver = :userid) group by msgid order by id desc limit 10";
 		$result2 = $DB->read($sql,$a);
 
 		$mydata = "Previews Chats:<br>";
