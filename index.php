@@ -127,6 +127,7 @@
         width: 290px;
         height: 120px;
         margin: auto;
+        margin-top: 10px;
         border: solid thin #aaa;
         padding: 1px;
         background-color: #eee;
@@ -343,7 +344,7 @@
                             messages_holder.scrollTo(0,messages_holder.scrollHeight);
                             var message_text = _("message_text");
                             message_text.focus();
-                        }, 0);
+                        }, 100);
                         break;
                     case "settings":
                         var inner_left_panel = _("inner_left_panel");

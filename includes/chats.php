@@ -78,12 +78,23 @@
         if (is_array($result2)) {
             $result2 = array_reverse($result2);
             foreach ($result2 as $data) {
-                $myuser = $DB->get_user($data->sender);
+                $other_user = $data->sender;
+                if ($data->sender == $_SESSION['userid']) {
+                    $other_user = $data->receiver;
+                }
+
+                $myuser = $DB->get_user($other_user);
+
+                $image = ($myuser->gender == "Male") ? "ui/images/user_male.jpg" : "ui/images/user_female.jpg";
+                if (file_exists($myuser->image)) {
+                    $image = $myuser->image;
+                }
 
                 $mydata .=   "
-                            <div id='active_contact'>
-                                <img src='$myuser->image'>
-                                $myuser->username
+                            <div id='active_contact' userid='$myuser->userid' onclick='start_chat(event)' style='cursor: pointer;'>
+                                <img src='$image'>
+                                $myuser->username <br>
+                                <span style='font-size: 15px;'>$data->message</span>
                             </div>";
             }
         }
