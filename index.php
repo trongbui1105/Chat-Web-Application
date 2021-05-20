@@ -210,6 +210,17 @@
         right: -5px;
         top: 40px;
     }
+    #message_right div img{
+        width: 25px;
+        height: 20px;
+        float: none;
+        margin: 0px;
+        border-radius: 50%;
+        border: none;
+        position: absolute;
+        top: 30px;
+        right: 5px;
+    }
 
     .loader_on {
         position: absolute;
@@ -268,6 +279,8 @@
 
 <script>
     var CURRENT_CHAT_USER = "";
+    var SEEN_STATUS = false;
+
     function _(element) {
         return document.getElementById(element);
     }
@@ -330,10 +343,12 @@
                         inner_left_panel.innerHTML = obj.message;
                         break;
                     case "chats_refresh":
+                        SEEN_STATUS = false;
                         var messages_holder = _("messages_holder");
 						messages_holder.innerHTML = obj.messages;
                         break;
                     case "chats":
+                        SEEN_STATUS = false;
                         var inner_left_panel = _("inner_left_panel");
 
                         inner_left_panel.innerHTML = obj.user;
@@ -400,13 +415,21 @@
         if (e.keyCode == 13) {
             send_message(e);
         }
+        SEEN_STATUS = true;
     }
 
     setInterval(function() {
         if (CURRENT_CHAT_USER != "") {
-            get_data({userid: CURRENT_CHAT_USER}, "chats_refresh");
+            get_data({
+                userid: CURRENT_CHAT_USER,
+                seen: SEEN_STATUS
+            }, "chats_refresh");
         }
     }, 5000);
+
+    function set_seen(e) {
+        SEEN_STATUS = true;
+    }
 
 </script>
 

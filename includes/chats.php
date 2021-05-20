@@ -6,8 +6,10 @@
     } 
     
     $refresh = false;
+    $seen = false;
     if ($DATA_OBJ->data_type == "chats_refresh"){
 		$refresh = true;
+        $seen = $DATA_OBJ->find->seen;
     }
 
     $sql = "select * from users where userid = :userid limit 1";
@@ -31,7 +33,7 @@
 
         $messages = "";
         if (!$refresh) {
-            $messages =    "<div id='messages_holder_parent' style='height: 698px;'>
+            $messages =    "<div id='messages_holder_parent' onclick='set_seen(event)' style='height: 698px;'>
                             <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
         }
 
@@ -47,9 +49,17 @@
             $result2 = array_reverse($result2);
             foreach ($result2 as $data) {
                 $myuser = $DB->get_user($data->sender);
-                if ($_SESSION['userid'] == $data->sender){
+
+                if ($data->receiver == $_SESSION['userid'] && $data->received == 1 && $seen) {
+                    $DB->write("update messages set seen = 1 where id = '$data->id' limit 1");
+                }
+                if ($data->receiver == $_SESSION['userid']) {
+                    $DB->write("update messages set received = 1 where id = '$data->id' limit 1");
+                }
+
+                if ($_SESSION['userid'] == $data->sender) {
                     $messages .= message_right($data,$myuser);
-                }else {
+                } else {
                     $messages .= message_left($data,$myuser);
                 }
             }

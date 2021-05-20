@@ -72,15 +72,25 @@
             $image = $row->image;
         }
 
-        return "
+        $a = "
             <div id='message_right'>
-                <div></div>
+                <div>";
+        
+        if ($data->seen) {
+            $a .= "<img src='ui/images/tick.png' />";
+        } else if ($data->received) {
+            $a .= "<img src='ui/images/tick_grey.png' />";
+        }
+
+        $a .= " </div>
                 <img src='$image' style='float:right'>
                 <b>$row->username</b> <br>
                 $data->message <br> <br>
                 <span style='font-size: 13px; color: #544141;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
             </div>
         ";
+
+        return $a;
     }
     function message_controls() {
         return "
