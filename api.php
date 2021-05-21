@@ -51,6 +51,9 @@
     else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "delete_message") {
         include("includes/delete_message.php");
     }
+    else if (isset($DATA_OBJ->data_type) && $DATA_OBJ->data_type == "delete_thread") {
+        include("includes/delete_thread.php");
+    }
 
     function message_left($data ,$row) {
         $image = ($row->gender == "Male") ? "ui/images/user_male.jpg" : "ui/images/user_female.jpg";
@@ -65,6 +68,7 @@
                 <b>$row->username</b> <br>
                 $data->message <br> <br>
                 <span style='font-size: 13px; color: white;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
+                <img id='trash' src='ui/icons/trash.png' onclick='delete_message(event)' msgid='$data->id' />
             </div>
         ";
     }
@@ -99,7 +103,7 @@
     function message_controls() {
         return "
             </div>
-                <span style='color: purple; cursor: pointer;'> Delete this thread </span>
+                <span onclick='delete_thread(event)' style='color:purple;cursor:pointer; height: 18px;'>Delete this thread </span>
                 <div style='display: flex; width: 100%; height: 60px;'>
                     <label for='message_file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 50px; margin-top: 5px; cursor:pointer'></label>
                     <input type='file' id='message_file' name='file' style='display: none'/>

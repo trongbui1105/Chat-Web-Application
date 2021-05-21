@@ -35,7 +35,7 @@
         $new_message = false;
         if (!$refresh) {
             $messages =    "<div id='messages_holder_parent' onclick='set_seen(event)' style='height: 698px;'>
-                            <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
+                            <div id='messages_holder' style='height: 618px; overflow-y:scroll;'>";
         }
 
         // read from db
@@ -43,7 +43,7 @@
  		$a['receiver'] = $arr['userid'];
 
 
-        $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) order by id desc limit 10";
+        $sql = "select * from messages where (sender = :sender && receiver = :receiver && deleted_sender = 0) || (receiver = :sender && sender = :receiver && deleted_receiver = 0) order by id desc";
         $result2 = $DB->read($sql, $a);
 
         if (is_array($result2)) {

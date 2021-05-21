@@ -40,8 +40,8 @@
                         <br>$row->username
                     </div>";
 
-        $messages =    "<div id='messages_holder_parent' style='height: 698px;'>
-                            <div id='messages_holder' style='height: 640px; overflow-y:scroll;'>";
+        $messages =    "<div id='messages_holder_parent'>
+                            <div id='messages_holder' style='height: 618px; overflow-y:scroll;'>";
 
         // read from db
         $a['msgid']= $arr['msgid'];

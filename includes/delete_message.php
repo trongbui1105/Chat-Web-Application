@@ -5,7 +5,7 @@
         $arr['rowid'] = $DATA_OBJ->find->rowid;
     }
 
-    $sql = "delete from messages where id = :rowid limit 1";
+    $sql = "select * from messages where id = :rowid limit 1";
     $result = $DB->read($sql, $arr);
 
     if (is_array($result)) {

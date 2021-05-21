@@ -176,6 +176,15 @@
         top: 40px;
     }
 
+    #message_left #trash{
+        width: 15px;
+        height: 20px;
+        position: absolute;
+        top: 15px;
+        right: -5px;
+        cursor: pointer;
+    }
+
     #message_right {
         width: 67%;
         height: 90px;
@@ -472,6 +481,19 @@
                 userid: CURRENT_CHAT_USER,
                 seen: SEEN_STATUS
             }, "chats_refresh");
+        }
+    }
+
+    function delete_thread(e) {
+        if(confirm("Are you sure you want to delete this whole thread?")) {
+            get_data({
+    			userid:CURRENT_CHAT_USER
+    		},"delete_thread");
+
+			get_data({
+    			userid:CURRENT_CHAT_USER,
+    			seen:SEEN_STATUS
+    		},"chats_refresh");
         }
     }
 
