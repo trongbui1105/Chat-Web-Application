@@ -156,7 +156,7 @@
         position: relative;
     }
 
-    #message_left img {
+    #message_left #prof_img {
         width: 80px;
         height: 80px;
         float: left;
@@ -191,7 +191,7 @@
         position: relative;
     }
 
-    #message_right img {
+    #message_right #prof_img {
         width: 80px;
         height: 80px;
         float: left;
@@ -220,6 +220,15 @@
         position: absolute;
         top: 30px;
         right: 5px;
+    }
+
+    #message_right #trash{
+        width: 15px;
+        height: 20px;
+        position: absolute;
+        top: 15px;
+        left: -5px;
+        cursor: pointer;
     }
 
     .loader_on {
@@ -278,6 +287,9 @@
 </html>
 
 <script>
+    var sent_audio = new Audio("message_sent.mp3");
+    var received_audio = new Audio("message_received.mp3");
+
     var CURRENT_CHAT_USER = "";
     var SEEN_STATUS = false;
 
@@ -346,7 +358,19 @@
                         SEEN_STATUS = false;
                         var messages_holder = _("messages_holder");
 						messages_holder.innerHTML = obj.messages;
+                        if (typeof obj.new_message != 'undefined'){
+                            if (obj.new_message) {
+                                received_audio.play();
+                                // setTimeout(function(){
+								// 	messages_holder.scrollTo(0,messages_holder.scrollHeight);
+								// 	var message_text = _("message_text");
+								// 	message_text.focus();
+								// },100);
+                            }
+                        }
                         break;
+                    case "send_message":
+                        sent_audio.play();
                     case "chats":
                         SEEN_STATUS = false;
                         var inner_left_panel = _("inner_left_panel");
@@ -360,6 +384,12 @@
                             var message_text = _("message_text");
                             message_text.focus();
                         }, 100);
+
+                        if (typeof obj.new_message != 'undefined') {
+                            if (obj.new_message) {
+                                received_audio.play();
+                            }
+                        }
                         break;
                     case "settings":
                         var inner_left_panel = _("inner_left_panel");
@@ -429,6 +459,20 @@
 
     function set_seen(e) {
         SEEN_STATUS = true;
+    }
+
+    function delete_message(e) {
+        if (confirm("Are you sure you want to delete this message?")) {
+            var msgid = e.target.getAttribute("msgid");
+            get_data({
+                rowid: msgid
+            }, "delete_message");
+
+            get_data({
+                userid: CURRENT_CHAT_USER,
+                seen: SEEN_STATUS
+            }, "chats_refresh");
+        }
     }
 
 </script>

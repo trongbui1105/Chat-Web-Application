@@ -66,11 +66,11 @@
 
         $info->user = $mydata;
         $info->messages = $messages;
-        $info->data_type = "chats";
+        $info->data_type = "send_message";
         echo json_encode($info);
     } else {
         $info->message = "That contacts was not found";
-        $info->data_type = "chats";
+        $info->data_type = "send_message";
         echo json_encode($info);
     }
 
