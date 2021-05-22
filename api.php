@@ -93,6 +93,7 @@
                 <img id='prof_img' src='$image' style='float:right'>
                 <b>$row->username</b> <br>
                 $data->message <br> <br>
+                <img src='$data->files' style='width:100%;'/> <br>
                 <span style='font-size: 13px; color: #544141;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
                 <img id='trash' src='ui/icons/trash.png' onclick='delete_message(event)' msgid='$data->id' />
             </div>

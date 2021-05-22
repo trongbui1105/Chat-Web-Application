@@ -49,13 +49,12 @@
             $DB->write($query, []);
         }
     } else if($data_type == "send_image") {
-    
             $arr['userid'] = "null";
-            if(isset($_POST['userid'])) {
+            if(isset($_POST['userid'])){
                 $arr['userid'] = addslashes($_POST['userid']);
             }
     
-            $arr['message'] = "hi";
+            $arr['message'] = "";
             $arr['date'] = date("Y-m-d H:i:s");
             $arr['sender'] = $_SESSION['userid'];
             $arr['msgid'] = get_random_string_max(60);
@@ -67,7 +66,7 @@
                 $sql = "select * from messages where (sender = :sender && receiver = :receiver) || (receiver = :sender && sender = :receiver) limit 1";
                 $result2 = $DB->read($sql, $arr2);
     
-                if(is_array($result2)){
+                if(is_array($result2)) {
                     $arr['msgid'] = $result2[0]->msgid;
                 }
     

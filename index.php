@@ -187,7 +187,7 @@
 
     #message_right {
         width: 67%;
-        height: 90px;
+        /* height: 90px; */
         margin: 10px;
         padding: 1px;
         padding-right: 0px;
@@ -370,13 +370,13 @@
                         if (typeof obj.new_message != 'undefined'){
                             if (obj.new_message) {
                                 received_audio.play();
-                                // setTimeout(function(){
-								// 	messages_holder.scrollTo(0,messages_holder.scrollHeight);
-								// 	var message_text = _("message_text");
-								// 	message_text.focus();
-								// },100);
                             }
                         }
+                        setTimeout(function(){
+                            messages_holder.scrollTo(0,messages_holder.scrollHeight);
+                            var message_text = _("message_text");
+                            message_text.focus();
+                        },100);
                         break;
                     case "send_message":
                         sent_audio.play();
@@ -610,15 +610,17 @@
    		var xml = new XMLHttpRequest();
         xml.onload = function() {
             if(xml.readyState == 4 || xml.status == 200) {
-                alert(xml.responseText);
+                handle_result(xml.responseText,"send_image");
                 get_data({
-                    userid:CURRENT_CHAT_USER,
-                    seen:SEEN_STATUS
-    		    },"chats_refresh");
+    				userid:CURRENT_CHAT_USER,
+    				seen:SEEN_STATUS
+    			},"chats_refresh");
             }
         }
         myform.append('file',files[0]);
 		myform.append('data_type',"send_image");
+        myform.append('userid',CURRENT_CHAT_USER);
+
         xml.open("POST", "uploader.php", true);
         xml.send(myform);
     }
