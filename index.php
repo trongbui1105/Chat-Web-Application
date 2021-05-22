@@ -404,6 +404,9 @@
                         var inner_left_panel = _("inner_left_panel");
                         inner_left_panel.innerHTML = obj.message;
                         break;
+                    case "send_image":
+						alert(obj.message);
+						break;
                     case "save_settings":
                         alert(obj.message);
                         get_data({},"user_info");
@@ -601,4 +604,23 @@
         radio_chat.checked = true;
         get_data({userid: CURRENT_CHAT_USER}, "chats");
     }
+
+    function send_image(files) {
+        var myform = new FormData();
+   		var xml = new XMLHttpRequest();
+        xml.onload = function() {
+            if(xml.readyState == 4 || xml.status == 200) {
+                alert(xml.responseText);
+                get_data({
+                    userid:CURRENT_CHAT_USER,
+                    seen:SEEN_STATUS
+    		    },"chats_refresh");
+            }
+        }
+        myform.append('file',files[0]);
+		myform.append('data_type',"send_image");
+        xml.open("POST", "uploader.php", true);
+        xml.send(myform);
+    }
+
 </script>

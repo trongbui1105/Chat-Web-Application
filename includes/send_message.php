@@ -81,12 +81,9 @@
     
         $length = rand(4,$length);
     
-        for($i=0;$i<$length;$i++) {
-    
+        for($i = 0; $i < $length; $i++) {
             $random = rand(0,61);
-            
             $text .= $array[$random];
-    
         }
     
         return $text;

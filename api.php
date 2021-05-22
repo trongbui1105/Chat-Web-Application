@@ -106,7 +106,7 @@
                 <span onclick='delete_thread(event)' style='color:purple;cursor:pointer; height: 18px;'>Delete this thread </span>
                 <div style='display: flex; width: 100%; height: 60px;'>
                     <label for='message_file'><img src='ui/icons/clip.png' style='opacity: 0.8; width: 50px; margin-top: 5px; cursor:pointer'></label>
-                    <input type='file' id='message_file' name='file' style='display: none'/>
+                    <input type='file' id='message_file' name='file' style='display:none' onchange='send_image(this.files)' />
                     <input id='message_text' onkeyup='enter_pressed(event)' style='flex:6; border: solid thin #ccc; border_bottom: none; font-size: 15px; padding: 6px;' type='text' placeholder='Type your message' />
                     <input style='flex:1; cursor: pointer;' type='button' value='Send' onclick='send_message(event)'/>
                 </div>
