@@ -61,16 +61,22 @@
             $image = $row->image;
         }
 
-        return "
-            <div id='message_left'>
-                <div></div>
-                <img id='prof_img' src='$image'>
-                <b>$row->username</b> <br>
-                $data->message <br> <br>
-                <span style='font-size: 13px; color: white;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
+        $a = "<div id='message_left'>
+            <div></div>
+            <img  id='prof_img' src='$image'>
+            <b>$row->username</b><br>
+            $data->message<br><br>";
+    
+        if($data->files != "" && file_exists($data->files)){
+            $a .= "<img src='$data->files' style='width:100%;cursor:pointer;' onclick='image_show(event)' /> <br>";
+        }
+
+        $a .= " <span style='font-size:11px;color:white;'>".date("jS M Y H:i:s a",strtotime($data->date))."<span>
                 <img id='trash' src='ui/icons/trash.png' onclick='delete_message(event)' msgid='$data->id' />
-            </div>
-        ";
+                </div> ";
+    
+
+        return $a;
     }
 
     function message_right($data, $row) {
@@ -92,9 +98,12 @@
         $a .= " </div>
                 <img id='prof_img' src='$image' style='float:right'>
                 <b>$row->username</b> <br>
-                $data->message <br> <br>
-                <img src='$data->files' style='width:100%;'/> <br>
-                <span style='font-size: 13px; color: #544141;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
+                $data->message <br> <br>";
+        if ($data->files != "" && file_exists($data->files)) {
+            $a .=  "<img src='$data->files' style='width:100%; cursor: pointer;' onclick='image_show(event)' /> <br>";
+        } 
+        
+        $a .=  "<span style='font-size: 13px; color: #544141;'>".date("jS M Y H:i:s", strtotime($data->date))."</span>
                 <img id='trash' src='ui/icons/trash.png' onclick='delete_message(event)' msgid='$data->id' />
             </div>
         ";

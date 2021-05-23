@@ -21,7 +21,10 @@
     $destination = "";
 
     if(isset($_FILES['file']) && $_FILES['file']['name'] != ""){
-        if($_FILES['file']['error'] == 0){
+        $allowed[] = "image/jpeg";
+        $allowed[] = "image/png";
+
+        if($_FILES['file']['error'] == 0 && in_array($_FILES['file']['type'], $allowed)){
             $folder = "uploads";
             if(!file_exists($folder)){
                 mkdir($folder,0777,true);

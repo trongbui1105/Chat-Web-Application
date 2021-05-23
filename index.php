@@ -143,7 +143,7 @@
 
     #message_left {
         width: 67%;
-        height: 90px;
+        /* height: 90px; */
         margin: 10px;
         padding: 1px;
         padding-right: 0px;
@@ -151,7 +151,7 @@
         color: white;
         float: left;
         box-shadow: 0px 0px 10px #545050;
-        border-bottom-left-radius: 50%;
+        border-bottom-left-radius: 40%;
         border-top-right-radius: 30%;
         position: relative;
     }
@@ -176,6 +176,7 @@
         top: 40px;
     }
 
+
     #message_left #trash{
         width: 15px;
         height: 20px;
@@ -184,6 +185,7 @@
         right: -5px;
         cursor: pointer;
     }
+
 
     #message_right {
         width: 67%;
@@ -195,7 +197,7 @@
         color: #444;
         float: right;
         box-shadow: 0px 0px 10px #545050;
-        border-bottom-right-radius: 50%;
+        border-bottom-right-radius: 40%;
         border-top-left-radius: 30%;
         position: relative;
     }
@@ -248,6 +250,20 @@
     .loader_off {
         display: none;
     }
+
+    .image_on {
+        position: absolute;
+        height: 450px;
+        width: 450px;
+        margin: auto;
+        z-index: 10;
+        top: 50px;
+        left: 50px;
+    }
+
+    .image_off {
+        display: none;
+    }
 </style>
 
 <body>
@@ -275,7 +291,8 @@
         <div id="right_panel">
             <div id="header">
                 <div id="loader_holder" class="loader_on"> <img style="width: 70px;" src="ui/icons/giphy.gif"> </div>
-                My Chat
+                <div id="image_viewer" class="image_off" onclick="close_image(event)"></div>
+				My Chat
             </div>
             <div id="container" style="display: flex;">
                 <div id="inner_left_panel">
@@ -370,13 +387,14 @@
                         if (typeof obj.new_message != 'undefined'){
                             if (obj.new_message) {
                                 received_audio.play();
+                                setTimeout(function(){
+                                    messages_holder.scrollTo(0,messages_holder.scrollHeight);
+                                    var message_text = _("message_text");
+                                    message_text.focus();
+                                },100);
                             }
                         }
-                        setTimeout(function(){
-                            messages_holder.scrollTo(0,messages_holder.scrollHeight);
-                            var message_text = _("message_text");
-                            message_text.focus();
-                        },100);
+                        
                         break;
                     case "send_message":
                         sent_audio.play();
@@ -557,6 +575,14 @@
     }
 
     function upload_profile_image(files) {
+        var filename = files[0].name;
+        var ext_start = filename.lastIndexOf(".");
+        var ext = filename.substr(ext_start + 1, 3);
+        if(!(ext == "jpg" || ext == "JPG")){
+            alert("This file type is not allowed");
+            return;
+        }
+        
         var change_image_button = _("change_image_button");
         change_image_button.disabled = true;
         change_image_button.innerHTML = "Uploading Image...";
@@ -606,6 +632,15 @@
     }
 
     function send_image(files) {
+        var filename = files[0].name;
+        var ext_start = filename.lastIndexOf(".");
+        var ext = filename.substr(ext_start + 1, 3);
+        var ext1 = filename.substr(ext_start + 1, 4);
+        if (!(ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG" || ext1 == "jpeg" || ext1 == "JPEG" )) {
+            alert("This file type is not allowed");
+            return;
+        }
+
         var myform = new FormData();
    		var xml = new XMLHttpRequest();
         xml.onload = function() {
@@ -625,4 +660,15 @@
         xml.send(myform);
     }
 
+    function close_image(e){
+        e.target.className = "image_off";
+    }
+
+    function image_show(e){
+        var image = e.target.src;
+        var image_viewer = _("image_viewer");
+
+        image_viewer.innerHTML = "<img src='"+image+"' style='width:100%' />";
+        image_viewer.className = "image_on";
+    }
 </script>
