@@ -266,7 +266,7 @@
     }
 </style>
 
-<body>
+<body style="background-color: #e6c4e8;">
     <div id="wrapper">
         <div id="left_panel">
             <div id="user_info" style="padding: 10px;">
@@ -387,12 +387,12 @@
                         if (typeof obj.new_message != 'undefined'){
                             if (obj.new_message) {
                                 received_audio.play();
-                                setTimeout(function(){
-                                    messages_holder.scrollTo(0,messages_holder.scrollHeight);
-                                    var message_text = _("message_text");
-                                    message_text.focus();
-                                },100);
                             }
+                            setTimeout(function(){
+                                messages_holder.scrollTo(0,messages_holder.scrollHeight);
+                                var message_text = _("message_text");
+                                message_text.focus();
+                            },100);
                         }
                         
                         break;
@@ -479,11 +479,18 @@
     }
 
     setInterval(function() {
-        if (CURRENT_CHAT_USER != "") {
+        var radio_chat = _("radio_chat");
+        var radio_contacts = _("radio_contacts");
+
+        if (CURRENT_CHAT_USER != "" && radio_chat.checked) {
             get_data({
                 userid: CURRENT_CHAT_USER,
                 seen: SEEN_STATUS
             }, "chats_refresh");
+        }
+
+        if (radio_contacts.checked) {
+            get_data({}, "contacts");
         }
     }, 5000);
 
