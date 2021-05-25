@@ -387,14 +387,13 @@
                         if (typeof obj.new_message != 'undefined'){
                             if (obj.new_message) {
                                 received_audio.play();
+                                setTimeout(function(){
+                                    messages_holder.scrollTo(0,messages_holder.scrollHeight);
+                                    var message_text = _("message_text");
+                                    message_text.focus();
+                                }, 100);
                             }
-                            setTimeout(function(){
-                                messages_holder.scrollTo(0,messages_holder.scrollHeight);
-                                var message_text = _("message_text");
-                                message_text.focus();
-                            },100);
                         }
-                        
                         break;
                     case "send_message":
                         sent_audio.play();
