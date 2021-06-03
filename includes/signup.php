@@ -49,6 +49,7 @@
         }
     }
 
+
     if ($Error == "") {
         $query = "insert into users (userid, username, email, gender, password, date) 
                     values (:userid, :username, :email, :gender, :password, :date)";
